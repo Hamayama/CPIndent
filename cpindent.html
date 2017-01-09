@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2017-1-9 v1.00
+    2017-1-9 v1.01
 -->
 <style type="text/css">
 <!--
@@ -42,6 +42,7 @@ function convert_button() {
     var init_indent;
     var show_color;
     var show_block_no;
+    var indent_all;
     var result = {};
 
     // ***** 戻り値の初期化 *****
@@ -53,16 +54,18 @@ function convert_button() {
     if (!document.getElementById("init_indent"))   { Alm("convert_button:0002"); return ret; }
     if (!document.getElementById("show_color"))    { Alm("convert_button:0003"); return ret; }
     if (!document.getElementById("show_block_no")) { Alm("convert_button:0004"); return ret; }
-    if (!document.getElementById("out_text1"))     { Alm("convert_button:0005"); return ret; }
-    if (!document.getElementById("result_show1"))  { Alm("convert_button:0006"); return ret; }
-    if (!document.getElementById("no_change"))     { Alm("convert_button:0007"); return ret; }
+    if (!document.getElementById("indent_all"))    { Alm("convert_button:0005"); return ret; }
+    if (!document.getElementById("out_text1"))     { Alm("convert_button:0006"); return ret; }
+    if (!document.getElementById("result_show1"))  { Alm("convert_button:0007"); return ret; }
+    if (!document.getElementById("no_change"))     { Alm("convert_button:0008"); return ret; }
     // ***** ソースの取得 *****
     src_st = document.getElementById("src_text1").value;
     init_indent = parseInt(document.getElementById("init_indent").value, 10);
     show_color = document.getElementById("show_color").checked;
     show_block_no = document.getElementById("show_block_no").checked;
+    indent_all = document.getElementById("indent_all").checked;
     // ***** 変換実行 *****
-    result = CPIndent.convert(src_st, init_indent, show_color, show_block_no);
+    result = CPIndent.convert(src_st, init_indent, show_color, show_block_no, indent_all);
     // ***** 出力の表示 *****
     document.getElementById("out_text1").value = result.out;
     document.getElementById("result_show1").innerHTML = result.html;
@@ -157,11 +160,12 @@ function sample_button(sample_no) {
 //
 // 公開I/F :
 //
-//   CPIndent.convert(src_st, init_indent, show_color, show_block_no)  変換実行
+//   CPIndent.convert(src_st, init_indent, show_color, show_block_no, indent_all)  変換実行
 //     src_st         ソース(文字列)
 //     init_indent    初期インデント(0-200)
 //     show_color     色表示フラグ(boolean)
 //     show_block_no  ブロック番号表示フラグ(boolean)
+//     indent_all     Cのプログラムも全てインデントするフラグ(boolean)
 //     戻り値         結果オブジェクト
 //                      result.out   テキスト出力(文字列)
 //                      result.html  HTML出力(文字列)
@@ -198,6 +202,7 @@ var CPIndent;
     var init_indent;   // 初期インデント(0-200)
     var show_color;    // 色表示フラグ(boolean)
     var show_block_no; // ブロック番号表示フラグ(boolean)
+    var indent_all;    // Cのプログラムも全てインデントするフラグ(boolean)
     var out_st;        // テキスト出力(文字列)
     var html_st;       // HTML出力(文字列)
     var token = [];    // トークン(配列)
@@ -219,7 +224,7 @@ var CPIndent;
     // ***** 公開I/F *****
 
     // ***** 変換実行 *****
-    function convert(src_st1, init_indent1, show_color1, show_block_no1) {
+    function convert(src_st1, init_indent1, show_color1, show_block_no1, indent_all1) {
         var result = {}; // 戻り値
 
         // ***** 戻り値の初期化 *****
@@ -231,6 +236,7 @@ var CPIndent;
         if (init_indent1 == null)   { Alm("CPIndent.convert:0002"); return result; }
         if (show_color1 == null)    { Alm("CPIndent.convert:0003"); return result; }
         if (show_block_no1 == null) { Alm("CPIndent.convert:0004"); return result; }
+        if (indent_all1 == null)    { Alm("CPIndent.convert:0005"); return result; }
         // ***** ソースの取得 *****
         src_st = src_st1;
         // ***** 初期インデントの取得 *****
@@ -241,6 +247,8 @@ var CPIndent;
         show_color = show_color1;
         // ***** ブロック番号表示フラグの取得 *****
         show_block_no = show_block_no1;
+        // ***** Cのプログラムも全てインデントするフラグの取得 *****
+        indent_all = indent_all1;
         // ***** トークン分割 *****
         tokenize();
         // ***** インデント変換 *****
@@ -349,11 +357,22 @@ var CPIndent;
             switch (token[i].kind) {
                 // ***** 命令以外のとき *****
                 case 0:
-                    // ***** インデント設定 *****
-                    if (cmd_cont && i > 0 && token[i - 1].line_cont) {
-                        token[i].indent = token[i - 1].indent;
+                    // ***** Cのプログラムも全てインデントするとき *****
+                    if (indent_all) {
+                        // ***** インデント設定 *****
+                        if (i > 0 && token[i - 1].line_cont) {
+                            token[i].indent = token[i - 1].indent;
+                        } else {
+                            token[i].indent = indent_now;
+                        }
+                    // ***** Cプリプロセッサ命令のみインデントするとき *****
                     } else {
-                        cmd_cont = false;
+                        // ***** インデント設定 *****
+                        if (cmd_cont && i > 0 && token[i - 1].line_cont) {
+                            token[i].indent = token[i - 1].indent;
+                        } else {
+                            cmd_cont = false;
+                        }
                     }
                     break;
                 // ***** ブロック開始のとき *****
@@ -598,7 +617,8 @@ var CPIndent;
 <input type="button" value="clear" onclick="clear_button();"> &nbsp;
 initial indent : <input type="text" id="init_indent" value="0" style="width: 50px;"> &nbsp;
 <input type="checkbox" id="show_color" checked>color &nbsp;
-<input type="checkbox" id="show_block_no">block no.</th>
+<input type="checkbox" id="show_block_no">block no. &nbsp;
+<input type="checkbox" id="indent_all">all</th>
 <th></th>
 </tr><tr>
 <th align="left" valign="top">out:</th>
