@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2017-1-9 v1.01
+    2017-1-10 v1.02
 -->
 <style type="text/css">
 <!--
@@ -118,7 +118,7 @@ function sample_button(sample_no) {
                 + "#define X 100\n"
                 + "#endif\n"
                 + "#endif\n"
-                + "int main(void) { printf(\"%d\\n\", X); }\n";
+                + "int main(void) { printf(\"%d\\n\", X); return 0; }\n";
             break;
         case 1:
             src_st = "#include <stdio.h>\n"
@@ -128,7 +128,7 @@ function sample_button(sample_no) {
                 + "#else\n"
                 + "#define X 200\n"
                 + "#endif\n"
-                + "int main(void) { printf(\"%d\\n\", X); }\n";
+                + "int main(void) { printf(\"%d\\n\", X); return 0; }\n";
             break;
         case 2:
             src_st = "#include <stdio.h>\n"
@@ -140,7 +140,7 @@ function sample_button(sample_no) {
                 + "        b = tmp;       \\\n"
                 + "    } while (0)\n"
                 + "#endif\n"
-                + "int main(void) { int a = 1, b = 2; SWAP_INT(a, b); printf(\"%d %d\\n\", a, b); }\n";
+                + "int main(void) { int a = 1, b = 2; SWAP_INT(a, b); printf(\"%d %d\\n\", a, b); return 0; }\n";
             break;
     }
     document.getElementById("src_text1").value = src_st;
