@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2017-1-10 v1.03
+    2017-1-11 v1.04
 -->
 <style type="text/css">
 <!--
@@ -424,8 +424,8 @@ var CPIndent;
         var ch, ch2;    // 文字
         var line_no;    // 行番号(1オリジン)
         var line_no_tk; // トークン開始時点の行番号
-        var cmd_re       = /^[\ \t]*#[\ \t]*([a-z]+)/; // Cプリプロセッサ命令抽出用
-        var line_cont_re = /\\[\ \t]*(?:\r|\n|\r\n)$/; // 行継続抽出用
+        var cmd_re       = /^[\ \t]*#[\ \t]*(\w+)?/;   // Cプリプロセッサ命令抽出用
+        var line_cont_re = /\\[\ \t]*(?:\r\n|\r|\n)$/; // 行継続抽出用
         var delim_ch;   // デリミタ文字
 
         // ***** トークン追加 *****
@@ -438,8 +438,8 @@ var CPIndent;
             // ***** 文字列解析 *****
             line_str = src_st.substring(i_start, i);
             ret_re = cmd_re.exec(line_str);
-            if (ret_re && ret_re[1]) {
-                if (hasOwn.call(keyword_table, ret_re[1])) {
+            if (ret_re) {
+                if (ret_re[1] && hasOwn.call(keyword_table, ret_re[1])) {
                     kind = keyword_table[ret_re[1]];
                 } else {
                     kind = 10;
