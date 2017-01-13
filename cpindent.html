@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2017-1-11 v1.05
+    2017-1-13 v1.06
 -->
 <style type="text/css">
 <!--
@@ -269,6 +269,7 @@ var CPIndent;
     // ***** 出力の生成 *****
     function make_output() {
         var i;
+        var ch;
         var token_len;       // トークン数
         var arr_st = [];     // 文字列の配列
         var span_open_count; // 閉じていないspanタグの数
@@ -279,7 +280,10 @@ var CPIndent;
         token_len = token.length;
         for (i = 0; i < token_len; i++) {
             // ***** 前方の空白を追加 *****
-            arr_st.push(make_space(token[i].indent));
+            ch = token[i].line.charAt(0);
+            if (!(ch == "\r" || ch == "\n")) {
+                arr_st.push(make_space(token[i].indent));
+            }
             // ***** 単語を追加 *****
             arr_st.push(token[i].line);
         }
@@ -292,7 +296,10 @@ var CPIndent;
         token_len = token.length;
         for (i = 0; i < token_len; i++) {
             // ***** 前方の空白を追加 *****
-            arr_st.push(make_space(token[i].indent));
+            ch = token[i].line.charAt(0);
+            if (!(ch == "\r" || ch == "\n")) {
+                arr_st.push(make_space(token[i].indent));
+            }
             // ***** 色設定を追加 *****
             if (show_color) {
                 // ***** ブロック開始のとき *****
