@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2017-1-14 v1.07
+    2017-4-18 v1.08
 -->
 <style type="text/css">
 <!--
@@ -350,7 +350,7 @@ var CPIndent;
         var token_len;           // トークン数
         var indent_now;          // 現在のインデント
         var block_no;            // ブロック番号(1オリジン)
-        var block_no_stack = []; // ブロック番号のスタック
+        var block_no_stack = []; // ブロック番号のスタック(配列)
         var cmd_cont;            // 命令継続フラグ(boolean)
 
         // ***** インデント変換 *****
@@ -478,7 +478,7 @@ var CPIndent;
         while (i < src_st_len) {
             // ***** 1文字取り出す *****
             ch = src_st.charAt(i++);
-            if (i < src_st_len) { ch2 = src_st.charAt(i); } else { ch2 = ""; }
+            ch2 = src_st.charAt(i);
             // ***** 改行のとき *****
             if (ch == "\r" || ch == "\n") {
                 line_no++;
@@ -492,13 +492,13 @@ var CPIndent;
                 while (i < src_st_len) {
                     // ***** 1文字取り出す *****
                     ch = src_st.charAt(i++);
-                    if (i < src_st_len) { ch2 = src_st.charAt(i); } else { ch2 = ""; }
+                    ch2 = src_st.charAt(i);
                     // ***** 行継続のとき *****
                     if (ch == "\\") {
                         while (i < src_st_len) {
                             // ***** 1文字取り出す *****
                             ch = src_st.charAt(i++);
-                            if (i < src_st_len) { ch2 = src_st.charAt(i); } else { ch2 = ""; }
+                            ch2 = src_st.charAt(i);
                             // ***** 空白かTABのとき *****
                             if (ch == " " || ch == "\t") { continue; }
                             // ***** 改行のとき *****
@@ -522,7 +522,7 @@ var CPIndent;
                 while (i < src_st_len) {
                     // ***** 1文字取り出す *****
                     ch = src_st.charAt(i++);
-                    if (i < src_st_len) { ch2 = src_st.charAt(i); } else { ch2 = ""; }
+                    ch2 = src_st.charAt(i);
                     // ***** デリミタのとき *****
                     if (ch == "*" && ch2 == "/") { i++; break; }
                     // ***** 改行のとき *****
@@ -542,7 +542,7 @@ var CPIndent;
                 while (i < src_st_len) {
                     // ***** 1文字取り出す *****
                     ch = src_st.charAt(i++);
-                    if (i < src_st_len) { ch2 = src_st.charAt(i); } else { ch2 = ""; }
+                    ch2 = src_st.charAt(i);
                     // ***** エスケープのとき *****
                     if (ch == "\\" && (ch2 == "\\" || ch2 == delim_ch)) { i++; continue; }
                     // ***** デリミタのとき *****
