@@ -50,7 +50,7 @@
 - OS
   - Windows 8.1 (64bit)
 - ブラウザ
-  - Chrome v59
+  - Chrome v67
 
 ## 履歴
 - 2017-1-9   v1.00 (初版)
