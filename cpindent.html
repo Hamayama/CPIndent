@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2017-7-17 v1.10
+    2018-6-26 v1.11
 -->
 <style type="text/css">
 <!--
@@ -13,6 +13,7 @@
     background-color: #fffca8; /* 背景色 */
     color: #000000;            /* 文字色 */
 }
+td { font-weight: bold; }
 -->
 </style>
 <script type="text/javascript">
@@ -99,34 +100,34 @@ function sample_button(sample_no) {
     switch (sample_no) {
         case 0:
             src_st = "#include <stdio.h>\n"
-                + "#if 1\n"
-                + "#ifndef A\n"
-                + "#define X 100\n"
-                + "#endif\n"
-                + "#endif\n"
-                + "int main(void) { printf(\"%d\\n\", X); return 0; }\n";
+                   + "#if 1\n"
+                   + "#ifndef A\n"
+                   + "#define X 100\n"
+                   + "#endif\n"
+                   + "#endif\n"
+                   + "int main(void) { printf(\"%d\\n\", X); return 0; }\n";
             break;
         case 1:
             src_st = "#include <stdio.h>\n"
-                + "#if 1 + 2 + 3 + \\\n"
-                + "    4 + 5 + 6\n"
-                + "#define X 100\n"
-                + "#else\n"
-                + "#define X 200\n"
-                + "#endif\n"
-                + "int main(void) { printf(\"%d\\n\", X); return 0; }\n";
+                   + "#if 1 + 2 + 3 + \\\n"
+                   + "    4 + 5 + 6\n"
+                   + "#define X 100\n"
+                   + "#else\n"
+                   + "#define X 200\n"
+                   + "#endif\n"
+                   + "int main(void) { printf(\"%d\\n\", X); return 0; }\n";
             break;
         case 2:
             src_st = "#include <stdio.h>\n"
-                + "#if 1\n"
-                + "#define SWAP_INT(a, b) \\\n"
-                + "    do {               \\\n"
-                + "        int tmp = a;   \\\n"
-                + "        a = b;         \\\n"
-                + "        b = tmp;       \\\n"
-                + "    } while (0)\n"
-                + "#endif\n"
-                + "int main(void) { int a = 1, b = 2; SWAP_INT(a, b); printf(\"%d %d\\n\", a, b); return 0; }\n";
+                   + "#if 1\n"
+                   + "#define SWAP_INT(a, b) \\\n"
+                   + "    do {               \\\n"
+                   + "        int tmp = a;   \\\n"
+                   + "        a = b;         \\\n"
+                   + "        b = tmp;       \\\n"
+                   + "    } while (0)\n"
+                   + "#endif\n"
+                   + "int main(void) { int a = 1, b = 2; SWAP_INT(a, b); printf(\"%d %d\\n\", a, b); return 0; }\n";
             break;
     }
     document.getElementById("src_text1").value = src_st;
@@ -590,31 +591,31 @@ var CPIndent;
 <body class="main_container">
 
 <form action="#" onsubmit="convert_button(); return false;">
-<table width="95%"><tr>
-<th align="center" colspan="3">CPIndent</th>
+<table style="width: 95%;"><tr>
+<td colspan="3" style="text-align: center;">CPIndent</td>
 </tr><tr>
-<th align="left" valign="top">src:</th>
-<th align="left" width="95%"><textarea id="src_text1" cols="40" rows="10" style="width: 100%;"></textarea></th>
-<th></th>
+<td style="vertical-align: top;">src:</td>
+<td style="width: 95%;"><textarea id="src_text1" cols="40" rows="10" style="width: 100%;"></textarea></td>
+<td></td>
 </tr><tr>
-<th></th>
-<th align="left"><input type="submit" value="convert"> &nbsp;
+<td></td>
+<td><input type="submit" value="convert"> &nbsp;
 <input type="button" value="clear" onclick="clear_button();"> &nbsp;
 initial indent : <input type="text" id="init_indent" value="0" style="width: 50px;"> &nbsp;
-<input type="checkbox" id="show_color" checked>color &nbsp;
-<input type="checkbox" id="show_block_no">block no. &nbsp;
-<input type="checkbox" id="indent_all">all</th>
-<th></th>
+<input type="checkbox" id="show_color" value="1" checked>color &nbsp;
+<input type="checkbox" id="show_block_no" value="1">block no. &nbsp;
+<input type="checkbox" id="indent_all" value="1">all</td>
+<td></td>
 </tr><tr>
-<th align="left" valign="top">out:</th>
-<th align="left" width="95%"><textarea id="out_text1" cols="40" rows="10" style="width: 100%;"></textarea></th>
-<th></th>
+<td style="vertical-align: top;">out:</td>
+<td style="width: 95%;"><textarea id="out_text1" cols="40" rows="10" style="width: 100%;"></textarea></td>
+<td></td>
 </tr><tr>
-<th></th>
-<th align="left"><input type="button" value="sample1" onclick="sample_button(0);">
+<td></td>
+<td><input type="button" value="sample1" onclick="sample_button(0);">
 <input type="button" value="sample2" onclick="sample_button(1);">
-<input type="button" value="sample3" onclick="sample_button(2);"></th>
-<th></th>
+<input type="button" value="sample3" onclick="sample_button(2);"></td>
+<td></td>
 </tr></table>
 <div id="no_change" style="display: none;"><br><b>[ no change ]</b></div>
 <pre><span id="debug_show1"></span></pre>
