@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2018-6-26 v1.11
+    2018-6-27 v1.12
 -->
 <style type="text/css">
 <!--
@@ -320,6 +320,10 @@ var CPIndent;
             arr_st.push("<\/span>");
         }
         html_st = arr_st.join("");
+        // ***** IE8対策 *****
+        if (document.attachEvent && !document.addEventListener) {
+            html_st = "<pre>" + html_st + "<\/pre>";
+        }
 
         // ***** デバッグ表示 *****
         if (0) {
