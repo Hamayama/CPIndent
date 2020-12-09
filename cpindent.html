@@ -5,7 +5,7 @@
 <title>CPIndent</title>
 <!--
     cpindent.html
-    2018-6-30 v1.13
+    2020-12-9 v1.14
 -->
 <style type="text/css">
 <!--
@@ -561,7 +561,7 @@ var CPIndent;
         while (true) {
             if (count & 1) { result_st += add_st; }
             count >>= 1;
-            if (count) { add_st += add_st; } else { break; }
+            if (count > 0) { add_st += add_st; } else { break; }
         }
         return result_st;
     }
